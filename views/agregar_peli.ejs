@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agregar Película</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .form-group input[type="text"] {
+            width: 96%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            outline: none;
+        }
+        .form-group textarea {
+            width: 96%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            outline: none;
+        }
+        .form-group button[type="submit"] {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .form-group button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            transition: color 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Agregar Película</h1>
+        <form action="/agregar_peli" method="POST">
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Nombre de la película" required>
+            </div>
+            <div class="form-group">
+                <label for="año">Año:</label>
+                <input type="text" id="año" name="año" placeholder="Año de la película" required>
+            </div>
+            <div class="form-group">
+                <label for="director">Director:</label>
+                <input type="text" id="director" name="director" placeholder="Director de la película" required>
+            </div>
+            <div class="form-group">
+                <label for="actores">Actores:</label>
+                <input type="text" id="actores" name="actores" placeholder="Actores de la película" required>
+            </div>
+            <div class="form-group">
+                <label for="descripción">Descripción:</label>
+                <textarea id="descripción" name="descripción" placeholder="Descripción de la película" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="img">URL de la imagen:</label>
+                <input type="text" id="img" name="img" placeholder="URL de la imagen de la película" required>
+            </div>
+            <div class="form-group">
+                <ul>
+                    <li><button type="submit">Agregar Película</button></li>
+                    <li><a href="/secret">Volver</a></li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
