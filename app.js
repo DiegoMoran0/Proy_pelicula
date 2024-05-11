@@ -15,11 +15,16 @@ mongoose.connect("mongodb://localhost:27017/PrograPro");
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(require("express-session")({
-    secret: "Rusty is a dog",
+    secret: "secret",
     resave: false,
     saveUninitialized: false
 }));
  
+app.use(function(req, res, next) {
+  res.locals.currentUser = req.user;
+  next();
+});
+
 app.use(passport.initialize());
 app.use(passport.session());
  
@@ -53,7 +58,7 @@ app.post("/register", async (req, res) => {
       password: req.body.password
     });
    
-    return res.status(200).json(user);
+    return res.send('Usuario agregado');
   });
 
 //Muestra el inicio de secion
@@ -70,12 +75,12 @@ app.post("/login", async function(req, res){
           //checa si la contraseña es correcta
           const result = req.body.password === user.password;
           if (result) {
-            res.render("secret");
+            res.redirect("/secret");
           } else {
-            res.status(400).json({ error: "password doesn't match" });
+            res.send("La contraseña esta mal escrita" );
           }
         } else {
-          res.status(400).json({ error: "User doesn't exist" });
+          res.send("El usuario no existe" );
         }
       } catch (error) {
         res.status(400).json({ error });
@@ -95,7 +100,7 @@ app.post("/register_adm", async (req, res) => {
     pass_admin: req.body.pass_admin
   });
  
-  return res.status(200).json(admin);
+  return res.send('Admin agregado');
 });
  
 //Muestra inicio de secion Admin
@@ -112,12 +117,12 @@ app.post("/login_adm", async function(req, res){
         //checa si la contraseña coinside
         const result = req.body.pass_admin === admin.pass_admin;
         if (result) {
-          res.render("secret");
+          res.redirect("/secret");
         } else {
-          res.status(400).json({ error: "password doesn't match" });
+          res.send("La contraseña esta mal escrita" );
         }
       } else {
-        res.status(400).json({ error: "Admin doesn't exist" });
+        res.send("El Admin no existe" );
       }
     } catch (error) {
       res.status(400).json({ error });
@@ -127,6 +132,7 @@ app.post("/login_adm", async function(req, res){
 //----------------------------------------------------
 // muestra "pagina secreta" con listado de películas
 app.get("/secret", async function (req, res) {
+  
   try {
     let peliculas;
     const searchTerm = req.query.q; // Obtenemos el término de búsqueda de la URL
@@ -134,10 +140,7 @@ app.get("/secret", async function (req, res) {
         // Utilizamos una consulta de búsqueda más compleja para buscar en múltiples campos de la película
         peliculas = await Pelicula.find({
             $or: [
-                { nombre: { $regex: searchTerm, $options: 'i' } }, // Busca en el nombre de la película
-                /*{ director: { $regex: searchTerm, $options: 'i' } }, // Busca en el nombre del director
-                { actores: { $regex: searchTerm, $options: 'i' } }, // Busca en el nombre de los actores
-                { descripción: { $regex: searchTerm, $options: 'i' } } // Busca en la descripción de la película*/
+                { nombre: { $regex: searchTerm, $options: 'i' } }
             ]
         });
     } else {
@@ -152,8 +155,7 @@ app.get("/secret", async function (req, res) {
     res.render("error", { message: "Error al obtener el listado de películas." });
   }
   });
- 
- 
+
 //----------------------------------------------------
 // Ruta para mostrar el formulario de agregar película
 app.get("/agregar_peli", function (req, res) {
@@ -221,4 +223,3 @@ let port = process.env.PORT || 3000;
 app.listen(port, function () {
     console.log("Server Has Started!");
 });
-
